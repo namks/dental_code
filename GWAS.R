@@ -1,6 +1,0 @@
-# GWAS code
-
-GWAS...
-
-
-

@@ -1,0 +1,23 @@
+docker run \
+  -v ${PROJECT_ROOT}:${PROJECT_ROOT} \
+  -v ${WES_PLINK_DIR}:${WES_PLINK_DIR} \
+  -v ${SPARSE_GRM_DIR}:${SPARSE_GRM_DIR} \
+  wzhou88/saige:1.3.0 step2_SPAtests.R \
+    --bedFile=${WES_PLINK_DIR}/wes_chr${i}.bed \
+    --bimFile=${WES_PLINK_DIR}/wes_chr${i}.bim \
+    --famFile=${WES_PLINK_DIR}/wes_chr${i}.fam \
+    --chrom=${i} \
+    --AlleleOrder=alt-first \
+    --minMAF=0 \
+    --minMAC=0.5 \
+    --GMMATmodelFile=${PROJECT_ROOT}/step1/step1_${PHENO}_EUR_WES.rda \
+    --varianceRatioFile=${PROJECT_ROOT}/step1/step1_${PHENO}_EUR_WES.varianceRatio.txt \
+    --sparseGRMFile=${SPARSE_GRM_DIR}/sparseGRM.mtx \
+    --sparseGRMSampleIDFile=${SPARSE_GRM_DIR}/sparseGRM.sampleIDs.txt \
+    --groupFile=${PROJECT_ROOT}/group_files/chr${i}_groupfile.withQC.txt \
+    --annotation_in_groupTest="lof,missense:lof,missense:lof:synonymous" \
+    --maxMAF_in_groupTest=0.0001,0.001,0.01 \
+    --SAIGEOutputFile=${PROJECT_ROOT}/step2/step2_GENE_${PHENO}_chr${i}_EUR \
+    --is_output_markerList_in_groupTest=TRUE \
+    --LOCO=FALSE \
+    --is_fastTest=TRUE

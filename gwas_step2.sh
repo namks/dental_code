@@ -1,0 +1,21 @@
+docker run \
+  -v ${PROJECT_ROOT}:${PROJECT_ROOT} \
+  -v ${UKB_IMPUTE_DIR}:${UKB_IMPUTE_DIR} \
+  wzhou88/saige:1.3.0 step2_SPAtests.R \
+    --bgenFile=${UKB_IMPUTE_DIR}/ukb_imp_chr${CHR}_v3.bgen \
+    --bgenFileIndex=${UKB_IMPUTE_DIR}/ukb_imp_chr${CHR}_v3.bgen.bgi \
+    --sampleFile=${UKB_IMPUTE_DIR}/ukb_imp_chr1_v3.sample \
+    --AlleleOrder=ref-first \
+    --chrom=${CHR} \
+    --minMAF=0 \
+    --minMAC=20 \
+    --GMMATmodelFile=${PROJECT_ROOT}/results/step1/step1_${TRAIT}_EUR.rda \
+    --varianceRatioFile=${PROJECT_ROOT}/results/step1/step1_${TRAIT}_EUR.varianceRatio.txt \
+    --LOCO=FALSE \
+    --is_Firth_beta=TRUE \
+    --pCutoffforFirth=0.1 \
+    --is_output_moreDetails=TRUE \
+    --sparseGRMFile=${PROJECT_ROOT}/GRM/UKB_sparseGRM_relatednessCutoff_0.05_5000_randomMarkersUsed.sparseGRM.mtx \
+    --sparseGRMSampleIDFile=${PROJECT_ROOT}/GRM/UKB_sparseGRM_relatednessCutoff_0.05_5000_randomMarkersUsed.sparseGRM.mtx.sampleIDs.txt \
+    --is_fastTest=TRUE \
+    --SAIGEOutputFile=${OUT_PREFIX}.txt
