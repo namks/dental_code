@@ -68,4 +68,18 @@ Computes adjusted odds ratios for dental–systemic disease pairs:
 
 #### 8. `twas.R`
 
-Runs FUSION TWAS pipeline for transcriptomic causal inference across multiple tissues:
+Runs FUSION TWAS pipeline for transcriptomic causal inference across multiple tissues
+
+⸻
+
+#### 9. `twas_post_process.R`
+
+Generate .top files for transcriptome-wide significant associations and runs FUSION post_process pipeline for Joint/conditional tests
+
+⸻
+
+#### 10. `twas_coloc_permutation.R`
+
+Generate .top files for transcriptome-wide significant associations and runs FUSION post_process pipeline for Joint/conditional tests
+
+
