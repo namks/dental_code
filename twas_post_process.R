@@ -19,7 +19,7 @@ cfg <- list(
   post_input_top_dir = "./results/top_files/",
   fusion_post_script = "./fusion_twas-master/FUSION.post_process.R",
   ld_ref_prefix = "./fusion_twas-master/LDREF/1000G.EUR.",
-  post_merged_output_file = "./results/top_files/all_joint_included_results_for_post.txt"
+  post_merged_output_file = "./results/top_files/all_joint_included_results_for_coloc.txt"
 )
 
 log_message <- function(message) {
@@ -174,3 +174,4 @@ if (!interactive()) {
   run_step_7_merge_post_process(cfg)
 
 }
+
