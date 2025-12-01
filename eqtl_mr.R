@@ -533,7 +533,7 @@ all_results_list <- future_lapply(1:nrow(mr_run_list), function(i) {
       if (!is.na(presso_global_pval_numeric_before) && presso_global_pval_numeric_before < 0.05 && 
           !is.null(outlier_idx) && is.numeric(outlier_idx) && length(outlier_idx) > 0) {
         
-        message(paste("    Found", length(outlier_idx), "outliers (PRESSO p < 0.05). Running corrected MR analysis..."))
+        message(paste("    Found", length(outlier_idx), "outliers (PRESSO p < 0.05). Running filtered MR analysis..."))
         dat_no_outliers <- dat[-outlier_idx, ]
         
         presso_global_pval_numeric_after <- NA_real_
@@ -575,18 +575,18 @@ all_results_list <- future_lapply(1:nrow(mr_run_list), function(i) {
           mr_res_final$presso_p2 <- presso_global_pval_numeric_after
           
         } else {
-          message("    Insufficient SNPs after outlier removal (<= 2). Corrected MR analysis cannot be performed.")
+          message("    Insufficient SNPs after outlier removal (<= 2). Filtered MR analysis cannot be performed.")
         }
         
       } else {
-        message(paste("    Skipping corrected MR analysis: (PRESSO pval:", 
+        message(paste("    Skipping filtered MR analysis: (PRESSO pval:", 
                       if(is.na(presso_global_pval_numeric_before)) "NA" else round(presso_global_pval_numeric_before, 3), 
                       ", Outliers:", if(is.null(outlier_idx)) 0 else length(outlier_idx), ")"))
       }
       
     } else {
       message(paste0("    (Skipping MR-PRESSO: only ", nrow(dat), " SNP(s) available.)"))
-      message(paste("    Skipping corrected MR analysis: (PRESSO pval: NA , Outliers: 0 )"))
+      message(paste("    Skipping filtered MR analysis: (PRESSO pval: NA , Outliers: 0 )"))
     }
     
     mr_res_final$tissue <- tissue
@@ -613,9 +613,10 @@ all_results_list <- future_lapply(1:nrow(mr_run_list), function(i) {
 valid_results <- all_results_list[lengths(all_results_list) > 0]
 if (length(valid_results) > 0) {
   final_combined <- bind_rows(valid_results)
-  final_output_file <- file.path(mr_output_dir, "MR_all_results_corrected_combined.csv")
+  final_output_file <- file.path(mr_output_dir, "MR_all_results_combined.csv")
   fwrite(final_combined, final_output_file)
-  message(paste("\n🎉 --- ANALYSIS COMPLETE! --- 🎉\nFinal combined results (with corrected) saved to:", final_output_file))
+  message(paste("\n🎉 --- ANALYSIS COMPLETE! --- 🎉\nFinal combined results saved to:", final_output_file))
 } else {
   message("\n❌ --- ANALYSIS FAILED --- ❌\nNo MR results were generated.")
+
 }
