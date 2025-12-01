@@ -19,7 +19,7 @@ cfg <- list(
   post_input_top_dir = "./results/top_files/",
   fusion_post_script = "./fusion_twas-master/FUSION.post_process.R",
   ld_ref_prefix = "./fusion_twas-master/LDREF/1000G.EUR.",
-  post_merged_output_file = "./results/top_files/all_joint_included_results_for_03.txt"
+  post_merged_output_file = "./results/top_files/all_joint_included_results_for_post.txt"
 )
 
 log_message <- function(message) {
@@ -31,13 +31,13 @@ log_message <- function(message) {
 # Step 3: Generate .top Files
 # ---------------------------------------------------------------------------- #
 generate_top_files <- function(cfg) {
-  log_message("--- [Generating .top files from Step 4 Results] ---")
+  log_message("--- [Generating .top files from TWAS Results] ---")
   
   if (!dir.exists(cfg$post_input_top_dir)) dir.create(cfg$post_input_top_dir, recursive = TRUE)
   
   filtered_files <- list.files(cfg$twas_output_dir, pattern = "_All_Tissues_TWAS_Filtered_Results.txt$", full.names = TRUE)
   
-  if(length(filtered_files) == 0) stop("No filtered results found from step 01.")
+  if(length(filtered_files) == 0) stop("No filtered results found from TWAS.")
   
   count <- 0
   for (f in filtered_files) {
@@ -76,7 +76,7 @@ generate_top_files <- function(cfg) {
       count <- count + 1
     }
   }
-  log_message(sprintf("Generated %d .top files (Sanitized & Full Format).", count))
+  log_message(sprintf("Generated %d .top files.", count))
 }
 
 # ---------------------------------------------------------------------------- #
@@ -172,4 +172,5 @@ if (!interactive()) {
   generate_top_files(cfg)
   run_step_6_post_process(cfg)
   run_step_7_merge_post_process(cfg)
+
 }
