@@ -28,7 +28,7 @@ gwas_data_dir    <- file.path(base_dir, "data", "gwas_summary_stats")
 
 # Configuration Files
 config_dir       <- file.path(base_dir, "config")
-master_config_file <- file.path(config_dir, "merged_coloc_results_annotated.txt") #fill in the hgnc_symbol with custom_label for analysis.
+master_config_file <- file.path(config_dir, "merged_coloc_results_annotated.txt") #fill in the empty hgnc_symbol with custom_label for analysis.
 
 # Output Results Paths
 parsed_output_dir <- file.path(base_dir, "results", "1_gtex_parsed")
@@ -620,3 +620,4 @@ if (length(valid_results) > 0) {
   message("\n❌ --- ANALYSIS FAILED --- ❌\nNo MR results were generated.")
 
 }
+
