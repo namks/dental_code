@@ -80,6 +80,14 @@ Generate .top files for transcriptome-wide significant associations and runs FUS
 
 #### 10. `twas_coloc_permutation.R`
 
-Generate .top files for transcriptome-wide significant associations and runs FUSION post_process pipeline for Joint/conditional tests
+Runs COLOC & Permutation test on the conditionally independent TWAS signals
 
+⸻
 
+#### 11. `eqtl_mr.R`
+
+Runs TwoSampleMR + MR-PRESSO for causal inference across transcriptome-wide significant gene-tissue-disease pairs:
+	•	Harmonization of exposure/outcome GWAS
+	•	IVW, MR-Egger, Weighted median, etc.
+	•	Global outlier test (MR-PRESSO)
+	•	Filtered and unfiltered MR analyses
