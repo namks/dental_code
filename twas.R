@@ -120,7 +120,7 @@ run_step_2_filter_annotate <- function(cfg) {
         tissue_name <- basename(f) %>% sub(paste0(disease_name, "_"), "", .) %>% sub("_TWAS_combined_results.*", "", .)
         
         # Bonferroni Filter
-        threshold <- 0.05 / max(1, (nrow(df) - 1))
+        threshold <- 0.05 / nrow(df)
         df_sig <- df[TWAS.P < threshold]
         
         if (nrow(df_sig) > 0) {
@@ -155,3 +155,4 @@ if (!interactive()) {
   run_step_2_filter_annotate(cfg)
 
 }
+
