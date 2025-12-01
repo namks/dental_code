@@ -24,8 +24,8 @@ cfg <- list(
   panel_n_file = "./GTEx_sample_sizes.txt", # contains PANEL, N
   gwas_n_file = "./gwas_sample_sizes.txt",  # contains Disease, GWAS_N
   
-  # Input: step 02 Output
-  joint_results_file = "./results/top_files/all_joint_included_results_for_post.txt",
+  # Input: Post-process Output
+  joint_results_file = "./results/top_files/all_joint_included_results_for_coloc.txt",
   
   perm_output_dir = "./results/PERMUTATION/",
   coloc_output_dir = "./results/COLOC/",
@@ -303,4 +303,5 @@ if (!interactive()) {
   run_step_5_perm_coloc(cfg)
   run_step_8_merge_coloc(cfg)
 }
+
 
