@@ -2,9 +2,8 @@
 # R code to perform COLOC & permutation test
 #
 # Steps:
-# 6. Run Permutation Test
-# 7. Run COLOC Analysis - use coloc 3.2.1
-# 8. Merge COLOC Results
+# 6. Run Permutation Test & COLOC Analysis - use coloc 3.2.1
+# 7. Merge COLOC Results
 ################################################################################
 
 suppressMessages({
@@ -43,8 +42,8 @@ log_message <- function(message) {
 # ---------------------------------------------------------------------------- #
 # Step 6: Permutation test and COLOC Analysis
 # ---------------------------------------------------------------------------- #
-run_step_5_perm_coloc <- function(cfg) {
-  log_message("--- [Step 5: Running Permutation & COLOC on Joint Results] ---")
+run_step_6_perm_coloc <- function(cfg) {
+  log_message("--- [Step 6: Running Permutation & COLOC on Joint Results] ---")
   
   if (!file.exists(cfg$joint_results_file)) stop("Joint results file not found. Run Post-process first.")
   if (!file.exists(cfg$gwas_n_file)) stop("GWAS sample size file not found.")
@@ -130,13 +129,13 @@ run_step_5_perm_coloc <- function(cfg) {
   }
   
   stopCluster(cl)
-  log_message("--- [Step 7 Complete] ---")
+  log_message("--- [Step 6 Complete] ---")
 }
 
 # ---------------------------------------------------------------------------- #
-# Step 8: Merge COLOC Results
+# Step 7: Merge COLOC Results
 # ---------------------------------------------------------------------------- #
-run_step_8_merge_coloc <- function(cfg) {
+run_step_7_merge_coloc <- function(cfg) {
   log_message("--- [Step 7: Scanning & Merging All Existing Results] ---")
   
   files <- list.files(cfg$coloc_output_dir, pattern = "\\.coloc\\.dat(\\.MHC)?$", recursive = TRUE, full.names = TRUE)
@@ -300,8 +299,9 @@ run_step_8_merge_coloc <- function(cfg) {
 
 # Execution
 if (!interactive()) {
-  run_step_5_perm_coloc(cfg)
-  run_step_8_merge_coloc(cfg)
+  run_step_6_perm_coloc(cfg)
+  run_step_7_merge_coloc(cfg)
 }
+
 
 
