@@ -64,3 +64,8 @@ Computes adjusted odds ratios for dental–systemic disease pairs:
 	•	Adjustment for demographic, clinical, and lifestyle covariates
 	•	Outputs OR, SE, and p-values for each disease pair
 
+⸻
+
+#### 8. `twas.R`
+
+Runs FUSION TWAS pipeline for transcriptomic causal inference across multiple tissues:
