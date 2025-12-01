@@ -25,8 +25,8 @@ cfg <- list(
   gwas_n_file = "./gwas_sample_sizes.txt",  # contains Disease, GWAS_N
   gene_map_file = "./Ensembl_to_HGNC_biomart.csv",
   
-  # Input: step 02 Output
-  joint_results_file = "./results/top_files/all_joint_included_results_for_03.txt",
+  # Input: Post-process Output
+  joint_results_file = "./results/top_files/all_joint_included_results_for_post.txt",
   
   perm_output_dir = "./results/PERMUTATION/",
   coloc_output_dir = "./results/COLOC/",
@@ -47,7 +47,7 @@ log_message <- function(message) {
 run_step_5_perm_coloc <- function(cfg) {
   log_message("--- [Step 5: Running Permutation & COLOC on Joint Results] ---")
   
-  if (!file.exists(cfg$joint_results_file)) stop("Joint results file not found. Run step 02 first.")
+  if (!file.exists(cfg$joint_results_file)) stop("Joint results file not found. Run Post-process first.")
   if (!file.exists(cfg$gwas_n_file)) stop("GWAS sample size file not found.")
   
   joint_df <- fread(cfg$joint_results_file)
@@ -279,4 +279,5 @@ run_step_8_merge_coloc <- function(cfg) {
 if (!interactive()) {
   run_step_5_perm_coloc(cfg)
   run_step_8_merge_coloc(cfg)
+
 }
