@@ -23,9 +23,8 @@ cfg <- list(
   ld_ref_prefix = "./fusion_twas-master/LDREF/1000G.EUR.",
   panel_n_file = "./GTEx_sample_sizes.txt", # contains PANEL, N
   gwas_n_file = "./gwas_sample_sizes.txt",  # contains Disease, GWAS_N
-  gene_map_file = "./Ensembl_to_HGNC_biomart.csv",
   
-  # Input: Post-process Output
+  # Input: step 02 Output
   joint_results_file = "./results/top_files/all_joint_included_results_for_post.txt",
   
   perm_output_dir = "./results/PERMUTATION/",
@@ -151,7 +150,6 @@ run_step_8_merge_coloc <- function(cfg) {
   
   res_list <- list()
   
-
   for (f in files) {
     tryCatch({
       fname <- basename(f)
@@ -252,17 +250,42 @@ run_step_8_merge_coloc <- function(cfg) {
     merged_coloc <- merge(merged_coloc, joint_subset, by = c("ID", "Tissue", "Disease"), all.x = TRUE)
   }
   
-  if (file.exists(cfg$gene_map_file)) {
-    gene_map <- fread(cfg$gene_map_file)
-    merged_coloc[, ID_clean := str_replace(ID, "\\.\\d+$", "")]
-    if ("hgnc_symbol" %in% names(merged_coloc)) merged_coloc[, hgnc_symbol := NULL]
-    
-    merged_coloc <- merge(merged_coloc, gene_map[, .(ensembl_gene_id, hgnc_symbol)], 
-                          by.x="ID_clean", by.y="ensembl_gene_id", all.x=TRUE)
-    merged_coloc[, ID_clean := NULL]
-  }
+  # --- ANNOTATION Using biomaRt ---
+  log_message("Running biomaRt annotation...")
   
-  # [6] Save
+  tryCatch({
+    merged_coloc[, ID_clean := str_replace(ID, "\\.\\d+$", "")]
+    unique_ids <- unique(merged_coloc$ID_clean)
+    
+    if(length(unique_ids) > 0) {
+      mart <- useMart("ensembl", dataset = "hsapiens_gene_ensembl")
+      
+      gene_map <- getBM(attributes = c("ensembl_gene_id", "hgnc_symbol"),
+                        filters = "ensembl_gene_id",
+                        values = unique_ids,
+                        mart = mart)
+      
+      setDT(gene_map)
+      
+      if ("hgnc_symbol" %in% names(merged_coloc)) merged_coloc[, hgnc_symbol := NULL]
+      
+      merged_coloc <- merge(merged_coloc, gene_map, 
+                            by.x = "ID_clean", by.y = "ensembl_gene_id", 
+                            all.x = TRUE)
+      
+      log_message("biomaRt annotation completed.")
+    } else {
+      log_message("No IDs found for biomaRt annotation.")
+    }
+    
+    merged_coloc[, ID_clean := NULL]
+    
+  }, error = function(e) {
+    log_message(paste("Error during biomaRt annotation:", e$message))
+    log_message("Proceeding without HGNC symbols.")
+  })
+  
+  
   preferred_order <- c("Disease", "Tissue", "ID", "hgnc_symbol", "CHR", "P0", "P1", "P2", "P3", "P4", "PP.H4.abf", 
                        "PERM.PV", "PERM.N", "PERM.ANL_PV", 
                        "JOINT.BETA", "JOINT.BETA.SE", "JOINT.Z", "JOINT.P", "Note")
@@ -279,5 +302,5 @@ run_step_8_merge_coloc <- function(cfg) {
 if (!interactive()) {
   run_step_5_perm_coloc(cfg)
   run_step_8_merge_coloc(cfg)
-
 }
+
