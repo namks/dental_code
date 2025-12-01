@@ -82,7 +82,7 @@ generate_top_files <- function(cfg) {
 # ---------------------------------------------------------------------------- #
 # Step 4: Post-Process (Conditional Analysis)
 # ---------------------------------------------------------------------------- #
-run_step_6_post_process <- function(cfg) {
+run_step_4_post_process <- function(cfg) {
   log_message("--- [Step 4: Running FUSION Post-Process] ---")
   
   top_files <- list.files(cfg$post_input_top_dir, pattern = "\\.top$", full.names = TRUE)
@@ -131,7 +131,7 @@ run_step_6_post_process <- function(cfg) {
 # ---------------------------------------------------------------------------- #
 # Step 5: Merge Results & Prepare for Step 6
 # ---------------------------------------------------------------------------- #
-run_step_7_merge_post_process <- function(cfg) {
+run_step_5_merge_post_process <- function(cfg) {
   log_message("--- [Step 5: Merging Joint Included Results] ---")
   
   files <- list.files(cfg$post_input_top_dir, pattern = "\\.joint_included\\.dat$", full.names = TRUE)
@@ -170,8 +170,9 @@ run_step_7_merge_post_process <- function(cfg) {
 # Execution
 if (!interactive()) {
   generate_top_files(cfg)
-  run_step_6_post_process(cfg)
-  run_step_7_merge_post_process(cfg)
+  run_step_4_post_process(cfg)
+  run_step_5_merge_post_process(cfg)
 
 }
+
 
