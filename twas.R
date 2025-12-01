@@ -36,7 +36,7 @@ log_message <- function(message) {
 # ---------------------------------------------------------------------------- #
 # Step 1: Main TWAS Analysis
 # ---------------------------------------------------------------------------- #
-run_step_3_main_twas <- function(cfg) {
+run_step_1_main_twas <- function(cfg) {
   log_message("--- [Step 1: Main TWAS Analysis] ---")
   
   sumstat_files <- list.files(cfg$sumstats_dir, pattern = "_chr[0-9]+\\.sumstats$", full.names = FALSE)
@@ -102,7 +102,7 @@ run_step_3_main_twas <- function(cfg) {
 # ---------------------------------------------------------------------------- #
 # Step 2: Filter & Annotate
 # ---------------------------------------------------------------------------- #
-run_step_4_filter_annotate <- function(cfg) {
+run_step_2_filter_annotate <- function(cfg) {
   log_message("--- [Step 2: Filter TWAS Results] ---")
   
   mart <- useMart("ensembl", dataset = "hsapiens_gene_ensembl")
@@ -151,6 +151,7 @@ run_step_4_filter_annotate <- function(cfg) {
 
 # Execution
 if (!interactive()) {
-  run_step_3_main_twas(cfg)
-  run_step_4_filter_annotate(cfg)
+  run_step_1_main_twas(cfg)
+  run_step_2_filter_annotate(cfg)
+
 }
